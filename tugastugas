@@ -1,0 +1,96 @@
+
+#include <iostream>
+#include <cmath>
+
+constexpr double dT = 1e-4;
+
+struct Vector {
+  double x;
+  double y;
+};
+
+Vector add(Vector v1, Vector v2) {
+    Vector v;
+    v.x = v1.x + v2.x;
+    v.y = v1.y + v2.y;
+    return v;
+}
+
+Vector sub(Vector v1, Vector v2) {
+  Vector v;
+  v.x = v1.x - v2.x;
+  v.y = v1.y - v2.y;
+  
+  return v;
+}
+
+Vector mul(Vector v, double k) {
+  Vector w;
+  w.x = v.x * k;
+  w.y = v.y * k;
+  
+  return w;
+}
+
+// k dalam radian berlawanan arah jarum jam
+Vector rot(Vector v, double k) {
+  Vector w;
+  w.x = std::cos(k)*v.x - std::sin(k)*v.y;
+  w.y = std::sin(k)*v.x + std::cos(k)*v.y;
+  
+  return w;
+}
+
+// melakukan simulasi
+Vector calc(Vector v, double w, double aM, double t) {
+  Vector r;
+  r.x = 0;
+  r.y = 0;
+  Vector a;
+  a.x = aM;
+  a.y = 0;
+	for (double t1 = 0; t1 < t; t1 += dT) {
+    r = add(r, mul(v, dT));
+    v = add(v, mul(a,dT));
+    a = rot(a, w*dT);
+  }
+  return r;
+}
+
+Vector div(Vector v1, Vector)
+// k dalam radian searah arah jarum jam
+Vector rot(Vector v, double k) {
+  Vector w;
+  w.x = std::cos(k)*v.x + std::sin(k)*v.y;
+  w.y = std::cos(k)*v.y - std::sin(k)*v.x;
+  
+  return w;
+}
+Vector calc( vector r; double t){
+    for (double t1=0;t1<t;t+=dT){
+        w = rot(v,a)
+        v = divdua(r,dT);
+        
+        r = add(r, mul(v, dT));
+        v = add(v, mul(a,dT));
+        a = rot(a, w*dT);
+    }
+}
+
+//rx = r0 + vdT
+//v = v + adT
+//a = a sin atau cos wdT
+//rx = r0 + (v0 + (asinwdT)dT)dT
+//(rx/dT - v0)dT = w
+//w = mul(b, dT);
+//b = sub(c, v);
+//c = div(r, dT);
+
+
+int main() {
+  Vector v;
+  double w, aM, t;
+  std::cin >> v.x >> v.y >> w >> aM >> t;
+  Vector r = calc(v,w,aM,t);
+  std::cout << r.x << ' ' << r.y << '\n';
+}
